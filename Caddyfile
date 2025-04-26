@@ -1,0 +1,13 @@
+probe.sassy.cz {
+    reverse_proxy jre21:8080
+
+    # Automatická správa TLS certifikátů
+    tls {
+        on_demand
+    }
+}
+
+# Blokování požadavků na IP adresu
+:8080 {
+    respond "Kámo tohle nezkoušej!" 403
+}
