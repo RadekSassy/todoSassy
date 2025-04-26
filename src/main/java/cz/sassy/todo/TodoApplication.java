@@ -2,13 +2,13 @@ package cz.sassy.todo;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import static org.springframework.boot.SpringApplication.*;
+import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
 public class TodoApplication {
 
-	public static void main(String[] args) {
-		run(TodoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        run(TodoApplication.class, args);
+    }
 
 }

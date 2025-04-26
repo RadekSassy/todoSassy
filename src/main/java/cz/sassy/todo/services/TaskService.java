@@ -2,12 +2,11 @@ package cz.sassy.todo.services;
 
 import cz.sassy.todo.models.Task;
 import cz.sassy.todo.repository.TaskRepository;
-import org.springframework.stereotype.Service;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
+import org.springframework.stereotype.Service;
 
 import java.text.Collator;
-// import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class TaskService {
 //                .collect(Collectors.toList());
 //    }
 
-//    porovnávání podle české abecedy
+    //    porovnávání podle české abecedy
     public List<Task> getCompletedTasks() {
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
         return taskRepository.findAll().stream()

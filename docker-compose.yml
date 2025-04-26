@@ -16,7 +16,7 @@ services:
     image: phpmyadmin:5.2.2
     restart: always
     depends_on:
-        - todo_db
+      - todo_db
     ports:
       - "8081:80"
     environment:
@@ -35,7 +35,7 @@ services:
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}
     depends_on:
-        - phpmyadmin
+      - phpmyadmin
     volumes:
       - ./app:/app
     working_dir: /app
