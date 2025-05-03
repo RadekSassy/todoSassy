@@ -1,6 +1,6 @@
-package cz.sassy.todo.services;
+package cz.sassy.todo.service;
 
-import cz.sassy.todo.models.MyUser;
+import cz.sassy.todo.model.MyUser;
 import cz.sassy.todo.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

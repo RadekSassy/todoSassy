@@ -1,7 +1,7 @@
-package cz.sassy.todo.controllers;
+package cz.sassy.todo.controller;
 
-import cz.sassy.todo.models.Task;
-import cz.sassy.todo.services.TaskService;
+import cz.sassy.todo.model.Task;
+import cz.sassy.todo.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

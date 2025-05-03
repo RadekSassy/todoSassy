@@ -1,6 +1,6 @@
-package cz.sassy.todo.controllers;
+package cz.sassy.todo.controller;
 
-import cz.sassy.todo.models.MyUser;
+import cz.sassy.todo.model.MyUser;
 import cz.sassy.todo.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

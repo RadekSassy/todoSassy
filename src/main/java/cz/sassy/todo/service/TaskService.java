@@ -1,6 +1,6 @@
-package cz.sassy.todo.services;
+package cz.sassy.todo.service;
 
-import cz.sassy.todo.models.Task;
+import cz.sassy.todo.model.Task;
 import cz.sassy.todo.repository.TaskRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;

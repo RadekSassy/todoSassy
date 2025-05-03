@@ -1,4 +1,4 @@
-package cz.sassy.todo.controllers;
+package cz.sassy.todo.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

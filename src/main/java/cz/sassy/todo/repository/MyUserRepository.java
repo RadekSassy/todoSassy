@@ -1,6 +1,6 @@
 package cz.sassy.todo.repository;
 
-import cz.sassy.todo.models.MyUser;
+import cz.sassy.todo.model.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

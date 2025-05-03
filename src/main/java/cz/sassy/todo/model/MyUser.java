@@ -1,4 +1,4 @@
-package cz.sassy.todo.models;
+package cz.sassy.todo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
