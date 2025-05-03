@@ -4,67 +4,53 @@ import cz.sassy.todo.models.Task;
 import cz.sassy.todo.services.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-//@RequestMapping("/tasks")
-public class TaskController {
+@RequestMapping("/private")
+public class TaskPrivateController {
+
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
+    public TaskPrivateController(TaskService taskService) {
         this.taskService = taskService;
     }
 
     @GetMapping
     public String getTasks(Model model) {
-
         List<Task> completedTasks = taskService.getCompletedTasks();
         List<Task> uncompletedTasks = taskService.getUncompletedTasks();
 
-        // Přidání obou seznamů do modelu
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
-        return "tasks";
+        model.addAttribute("privateMode", true);
+        return "tasks"; // Vytvoříš nový HTML soubor
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String createTask(@RequestParam String title) {
         taskService.createTask(title);
-        return "redirect:/";
-    }
-    @GetMapping("/login")
-    public String loginTasks() {
-        return "custom_login";
+        return "redirect:/private";
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteTasks(@PathVariable Long id) {
+    public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return "redirect:/";
+        return "redirect:/private";
     }
 
     @GetMapping("/{id}/toggle")
-    public String toggleTasks(@PathVariable Long id) {
+    public String toggleTask(@PathVariable Long id) {
         taskService.toggleTask(id);
-        return "redirect:/";
-    }
-
-    @GetMapping("/{id}/update")
-    public String updateTasks(@PathVariable Long id, Model model) {
-        Task task = taskService.getTaskById(id);
-        model.addAttribute("task", task);
-        return "update";
+        return "redirect:/private";
     }
 
     @PostMapping("/update")
     public String updateTask(@RequestParam Long id, @RequestParam String title) {
         taskService.updateTask(id, title);
-        return "redirect:/";
+        return "redirect:/private";
     }
-
 }
+

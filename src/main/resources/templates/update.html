@@ -12,7 +12,8 @@
 <body class="bg-light">
 <div class="container">
     <h1 class="mt-5 text-center">Uprav úkol</h1>
-    <form action="/update" class="d-flex align-items-center mt-3" method="post">
+    <form th:action="${privateMode} ? '/private/update' : '/update'"
+          class="d-flex align-items-center mt-3" method="post">
         <input name="id" th:value="${task.id}" type="hidden">
         <div class="col-9 col-sm-10">
             <textarea class="form-control form-control-lg" name="title" placeholder="" rows="5"
@@ -28,3 +29,5 @@
 </div>
 </body>
 </html>
+<!--                            "Upravit úkol" -->
+<!--                             nefunguje mi správně upravit a potom to rozhodí vše -->

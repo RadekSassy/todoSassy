@@ -10,14 +10,27 @@
 
 </head>
 <body class="bg-light">
+
 <div class="container">
+
     <div style="text-align: right; padding: 10px;">
-        <a href="/login" style="text-decoration: none; font-weight: bold;">Přihlásit se</a>
+        <th:block sec:authorize="isAnonymous()">
+            <a href="/login" class="btn btn-link text-decoration-none fw-bold text-primary">Přihlásit se</a>
+        </th:block>
+
+        <th:block sec:authorize="isAuthenticated()">
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-link text-decoration-none fw-bold text-danger">
+                    Odhlásit se
+                </button>
+            </form>
+        </th:block>
     </div>
 
-    <h1 class="mt-5 text-center">Moje úkoly</h1>
+    <h1 class="mt-5 text-center" th:text="${privateMode} ? 'Moje soukromé úkoly' : 'Veřejné úkoly'"></h1>
 
-    <form action="/" class="d-flex align-items-center mt-3" method="post">
+    <form th:action="${privateMode} ? '/private/create' : '/'" class="d-flex align-items-center mt-3"
+          method="post">
         <div class="col-9 col-sm-10">
             <input class="form-control form-control-lg" name="title" placeholder="Vlož nový úkol.." type="text">
         </div>
@@ -39,15 +52,18 @@
                           th:text="${task.title}">Task title</span>
                     <div class="d-flex">
                         <a class="btn btn-outline-success btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/toggle(id=${task.id})}" title="Splněno">
+                           th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
+                           title="Splněno">
                             <i class="bi bi-check"></i>
                         </a>
                         <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/update(id=${task.id})}" title="Uprav">
+                           th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
+                           title="Uprav">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/delete(id=${task.id})}" title="Smaž">
+                           th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
+                           title="Smaž">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
@@ -65,15 +81,18 @@
                           th:text="${task.title}">Task title</span>
                     <div class="d-flex">
                         <a class="btn btn-outline-warning btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/toggle(id=${task.id})}" title="Obnov">
+                           th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
+                           title="Obnov">
                             <i class="bi bi-arrow-repeat"></i>
                         </a>
                         <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/update(id=${task.id})}" title="Uprav">
+                           th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
+                           title="Uprav">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
-                           th:href="@{/{id}/delete(id=${task.id})}" title="Smaž">
+                           th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
+                           title="Smaž">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
