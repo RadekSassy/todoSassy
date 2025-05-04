@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Controller for handling task-related requests.
+ */
+
 @Controller
 //@RequestMapping("/tasks")
 public class TaskController {
@@ -37,6 +41,7 @@ public class TaskController {
         taskService.createTask(title);
         return "redirect:/";
     }
+
     @GetMapping("/login")
     public String loginTasks() {
         return "custom_login";
@@ -66,5 +71,4 @@ public class TaskController {
         taskService.updateTask(id, title);
         return "redirect:/";
     }
-
 }

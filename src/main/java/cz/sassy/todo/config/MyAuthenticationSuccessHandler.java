@@ -9,9 +9,11 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import java.io.IOException;
 
 /**
- * AuthenticationSuccessHandler is a custom handler that determines the redirect URL
- * after successful authentication based on user roles.
+ * MyAuthenticationSuccessHandler is a custom authentication success handler that extends
+ * SavedRequestAwareAuthenticationSuccessHandler. It determines the target URL after successful authentication
+ * based on the user's roles.
  */
+
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * RegistrationController is a Spring MVC controller that handles user registration.
- * It provides an endpoint to create a new user and save it to the database.
+ * RegistrationController handles user registration.
+ * It provides an endpoint to create a new user.
  */
 
 @RestController

@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing tasks.
+ */
+
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -19,15 +23,6 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-//porovnávání unicode
-//    public List<Task> getCompletedTasks() {
-//        return taskRepository.findAll().stream()
-//                .filter(Task::isCompleted)
-//                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
-//                .collect(Collectors.toList());
-//    }
-
-    //    porovnávání podle české abecedy
     public List<Task> getCompletedTasks() {
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
         return taskRepository.findAll().stream()

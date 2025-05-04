@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * SecurityConfig is a configuration class that sets up security for the application.
+ * SecurityConfig is a configuration class that sets up Spring Security for the application.
  * It configures authentication, authorization, and password encoding.
  */
 

@@ -6,6 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+/**
+ * Task class represents a task in the system.
+ * It contains fields for id, title, and completed status.
+ */
+
 @Entity
 @Data
 public class Task {

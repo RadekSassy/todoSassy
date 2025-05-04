@@ -35,3 +35,4 @@ build/
 todo_db/
 app/
 *.env
+/coDelat.md

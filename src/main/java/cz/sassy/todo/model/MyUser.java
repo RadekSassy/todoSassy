@@ -7,8 +7,9 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 /**
- * MyUser is an entity class that represents a user in the application.
+ * MyUser class represents a user in the system.
  * It contains fields for id, username, password, and role.
+ * The role can be either ADMIN or USER.
  */
 
 @Entity
@@ -19,6 +20,5 @@ public class MyUser {
     private Long id;
     private String username;
     private String password;
-    private String role; // ADMIN, USER
-
+    private String role; // ADMIN,USER
 }
