@@ -26,7 +26,7 @@ public class TaskPrivateController {
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
         model.addAttribute("privateMode", true);
-        return "tasks"; // Vytvoříš nový HTML soubor
+        return "tasks";
     }
 
     @PostMapping("/create")
@@ -47,10 +47,17 @@ public class TaskPrivateController {
         return "redirect:/private";
     }
 
+    @GetMapping("/{id}/update")
+    public String updateTasks(@PathVariable Long id, Model model) {
+        Task task = taskService.getTaskById(id);
+        model.addAttribute("task", task);
+        model.addAttribute("privateMode", true);
+        return "update";
+    }
+
     @PostMapping("/update")
     public String updateTask(@RequestParam Long id, @RequestParam String title) {
         taskService.updateTask(id, title);
         return "redirect:/private";
     }
 }
-
