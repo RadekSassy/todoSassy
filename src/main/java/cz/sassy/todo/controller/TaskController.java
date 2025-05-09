@@ -33,6 +33,7 @@ public class TaskController {
         // Přidání obou seznamů do modelu
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
+        model.addAttribute("view", "tasks");
         return "tasks";
     }
 
@@ -63,6 +64,7 @@ public class TaskController {
     public String updateTasks(@PathVariable Long id, Model model) {
         Task task = taskService.getTaskById(id);
         model.addAttribute("task", task);
+        model.addAttribute("view", "update");
         return "update";
     }
 
