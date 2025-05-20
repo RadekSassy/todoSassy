@@ -1,9 +1,12 @@
 package cz.sassy.todo.service;
 
 import cz.sassy.todo.model.Task;
+import cz.sassy.todo.repository.MyUserRepository;
 import cz.sassy.todo.repository.TaskRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
@@ -13,36 +16,47 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Service class for managing private tasks.
+ * Service class for managing tasks in private mode.
+ * This class provides methods to create, update, delete, and retrieve tasks.
+ * It also includes methods to get completed and uncompleted tasks for the current user.
  */
 
 @Service
 public class TaskPrivateService {
     private final TaskRepository taskRepository;
+    private final MyUserRepository myUserRepository;
 
-    public TaskPrivateService(TaskRepository taskRepository) {
+    public TaskPrivateService(TaskRepository taskRepository, MyUserRepository myUserRepository) {
         this.taskRepository = taskRepository;
+        this.myUserRepository = myUserRepository;
     }
 
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return myUserRepository.findByUsername(username).orElseThrow().getId();
+    }
+
+
     public List<Task> getCompletedTasks(String username) {
-        System.out.println("Přihlášený uživatel: " + username);
 
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
 
-        return taskRepository.findByUserIdAndCompletedTrue(1L).stream()
+        return taskRepository.findByUserIdAndCompletedTrue(getCurrentUserId()).stream()
                 .sorted((task1, task2) -> collator.compare(task1.getTitle(), task2.getTitle()))
                 .collect(Collectors.toList());
     }
 
     public List<Task> getUncompletedTasks(String username) {
-        return new ArrayList<>(taskRepository.findByUserIdAndCompletedFalse(1L));
+
+        return new ArrayList<>(taskRepository.findByUserIdAndCompletedFalse(getCurrentUserId()));
     }
 
     public void createTask(String title) {
 
         String ValidatedTitle = validateAndTrimTitle(title);
 
-        if (ValidatedTitle == null || taskRepository.count() >= 10000) {
+        if (ValidatedTitle == null) {
             return;
         }
 
@@ -51,6 +65,7 @@ public class TaskPrivateService {
         Task task = new Task();
         task.setCompleted(false);
         task.setTitle(sanitizedTitle);
+        task.setUserId(getCurrentUserId());
         taskRepository.save(task);
     }
 

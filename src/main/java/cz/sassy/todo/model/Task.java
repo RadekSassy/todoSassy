@@ -7,8 +7,9 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 /**
- * Task class represents a task in the system.
- * It contains fields for id, title, and completed status.
+ * Entity class representing a task.
+ * This class is mapped to the "tasks" table in the database.
+ * It contains fields for task ID, title, completion status, and user ID.
  */
 
 @Entity
@@ -19,5 +20,5 @@ public class Task {
     private Long id;
     private String title;
     private boolean completed;
-    private Long userId;
+    private Long userId; // Nullable for public tasks
 }
