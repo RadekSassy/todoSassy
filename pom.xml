@@ -10,7 +10,7 @@
     </parent>
     <groupId>cz.sassy</groupId>
     <artifactId>todo</artifactId>
-    <version>0.0.8-vps</version>
+    <version>0.0.9-vps</version>
     <name>todo</name>
     <description>todo project with thymeleaf added to the docker</description>
 

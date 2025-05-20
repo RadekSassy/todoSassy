@@ -4,6 +4,8 @@ import cz.sassy.todo.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Repository interface for Task entity.
  * This interface extends JpaRepository to provide CRUD operations for Task.
@@ -12,5 +14,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
+    List<Task> findByUserIdIsNull();
+    List<Task> findByUserIdAndCompletedTrue(Long userId);
+    List<Task> findByUserIdAndCompletedFalse(Long userId);
 
 }

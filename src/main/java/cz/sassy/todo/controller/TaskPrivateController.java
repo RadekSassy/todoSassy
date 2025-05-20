@@ -1,11 +1,12 @@
 package cz.sassy.todo.controller;
 
 import cz.sassy.todo.model.Task;
-import cz.sassy.todo.service.TaskService;
+import cz.sassy.todo.service.TaskPrivateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -16,16 +17,19 @@ import java.util.List;
 @RequestMapping("/private")
 public class TaskPrivateController {
 
-    private final TaskService taskService;
+    private final TaskPrivateService taskPrivateService;
 
-    public TaskPrivateController(TaskService taskService) {
-        this.taskService = taskService;
+    public TaskPrivateController(TaskPrivateService taskPrivateService) {
+        this.taskPrivateService = taskPrivateService;
     }
 
     @GetMapping
-    public String getTasks(Model model) {
-        List<Task> completedTasks = taskService.getCompletedTasks();
-        List<Task> uncompletedTasks = taskService.getUncompletedTasks();
+    public String getTasks(Model model, Principal principal) {
+
+        String username = principal.getName();
+
+        List<Task> completedTasks = taskPrivateService.getCompletedTasks(username);
+        List<Task> uncompletedTasks = taskPrivateService.getUncompletedTasks(username);
 
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
@@ -35,25 +39,25 @@ public class TaskPrivateController {
 
     @PostMapping("/create")
     public String createTask(@RequestParam String title) {
-        taskService.createTask(title);
+        taskPrivateService.createTask(title);
         return "redirect:/private";
     }
 
     @GetMapping("/{id}/delete")
     public String deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+        taskPrivateService.deleteTask(id);
         return "redirect:/private";
     }
 
     @GetMapping("/{id}/toggle")
     public String toggleTask(@PathVariable Long id) {
-        taskService.toggleTask(id);
+        taskPrivateService.toggleTask(id);
         return "redirect:/private";
     }
 
     @GetMapping("/{id}/update")
     public String updateTasks(@PathVariable Long id, Model model) {
-        Task task = taskService.getTaskById(id);
+        Task task = taskPrivateService.getTaskById(id);
         model.addAttribute("task", task);
         model.addAttribute("privateMode", true);
         return "update";
@@ -61,7 +65,7 @@ public class TaskPrivateController {
 
     @PostMapping("/update")
     public String updateTask(@RequestParam Long id, @RequestParam String title) {
-        taskService.updateTask(id, title);
+        taskPrivateService.updateTask(id, title);
         return "redirect:/private";
     }
 }

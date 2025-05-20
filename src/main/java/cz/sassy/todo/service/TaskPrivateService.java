@@ -7,41 +7,42 @@ import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Service class for managing tasks.
+ * Service class for managing private tasks.
  */
 
 @Service
-public class TaskService {
+public class TaskPrivateService {
     private final TaskRepository taskRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskPrivateService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    public List<Task> getCompletedTasks() {
+    public List<Task> getCompletedTasks(String username) {
+        System.out.println("Přihlášený uživatel: " + username);
+
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
-        return taskRepository.findByUserIdIsNull().stream()
-                .filter(Task::isCompleted)
+
+        return taskRepository.findByUserIdAndCompletedTrue(1L).stream()
                 .sorted((task1, task2) -> collator.compare(task1.getTitle(), task2.getTitle()))
                 .collect(Collectors.toList());
     }
 
-    public List<Task> getUncompletedTasks() {
-        return taskRepository.findByUserIdIsNull().stream()
-                .filter(task -> !task.isCompleted())
-                .collect(Collectors.toList());
+    public List<Task> getUncompletedTasks(String username) {
+        return new ArrayList<>(taskRepository.findByUserIdAndCompletedFalse(1L));
     }
 
     public void createTask(String title) {
 
         String ValidatedTitle = validateAndTrimTitle(title);
 
-        if (ValidatedTitle == null || taskRepository.count() >= 10) {
+        if (ValidatedTitle == null || taskRepository.count() >= 10000) {
             return;
         }
 
