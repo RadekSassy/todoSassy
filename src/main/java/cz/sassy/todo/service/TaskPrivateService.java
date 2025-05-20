@@ -38,7 +38,7 @@ public class TaskPrivateService {
     }
 
 
-    public List<Task> getCompletedTasks(String username) {
+    public List<Task> getCompletedTasks() {
 
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
 
@@ -47,7 +47,7 @@ public class TaskPrivateService {
                 .collect(Collectors.toList());
     }
 
-    public List<Task> getUncompletedTasks(String username) {
+    public List<Task> getUncompletedTasks() {
 
         return new ArrayList<>(taskRepository.findByUserIdAndCompletedFalse(getCurrentUserId()));
     }

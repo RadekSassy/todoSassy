@@ -28,8 +28,8 @@ public class TaskPrivateController {
 
         String username = principal.getName();
 
-        List<Task> completedTasks = taskPrivateService.getCompletedTasks(username);
-        List<Task> uncompletedTasks = taskPrivateService.getUncompletedTasks(username);
+        List<Task> completedTasks = taskPrivateService.getCompletedTasks();
+        List<Task> uncompletedTasks = taskPrivateService.getUncompletedTasks();
 
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
