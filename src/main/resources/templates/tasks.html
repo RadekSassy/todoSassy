@@ -1,76 +1,78 @@
 <head th:replace="~{fragments/header.html}">
 </head>
-    <h1 class="mt-5 text-center" th:text="${privateMode} ? 'Moje soukromé úkoly' : 'Veřejné úkoly'"></h1>
 
-    <form th:action="${privateMode} ? '/private/create' : '/'" class="d-flex align-items-center mt-3"
-          method="post">
-        <div class="col-9 col-sm-10">
-            <input class="form-control form-control-lg" name="title" placeholder="Vlož nový úkol.." type="text">
-        </div>
-        <div class="col-3 col-sm-2">
-            <button class="btn btn-primary btn-lg ms-2" title="Vlož úkol" type="submit">
-                <i class="bi bi-pencil"></i>
-            </button>
-        </div>
-    </form>
-    <h6 class="mt-5 text-left ">Úkoly k vyřešení:</h6>
-    <div class="mt-4">
-        <th:block th:if="${uncompletedTasks.isEmpty()}">
-            <p class="text-center text-success fs-4">Super! Dnes máš volno, užij si to!</p>
-        </th:block>
-        <th:block th:each="task : ${uncompletedTasks}">
-            <div class="card mb-2">
-                <div class="card-body d-flex justify-content-between align-items-center">
+<h1 class="mt-5 text-center" th:text="${privateMode} ? 'Moje soukromé úkoly' : 'Veřejné úkoly'"></h1>
+
+<form th:action="${privateMode} ? '/private/create' : '/'" class="d-flex align-items-center mt-3"
+      method="post">
+    <div class="col-9 col-sm-10">
+        <input class="form-control form-control-lg" name="title" placeholder="Vlož nový úkol.." type="text">
+    </div>
+    <div class="col-3 col-sm-2">
+        <button class="btn btn-primary btn-lg ms-2" title="Vlož úkol" type="submit">
+            <i class="bi bi-pencil"></i>
+        </button>
+    </div>
+</form>
+
+<h6 class="mt-5 text-left ">Úkoly k vyřešení:</h6>
+<div class="mt-4">
+    <th:block th:if="${uncompletedTasks.isEmpty()}">
+        <p class="text-center text-success fs-4">Super! Dnes máš volno, užij si to!</p>
+    </th:block>
+    <th:block th:each="task : ${uncompletedTasks}">
+        <div class="card mb-2">
+            <div class="card-body d-flex justify-content-between align-items-center">
                     <span th:classappend="${task.completed} ? 'text-muted text-decoration-line-through'"
                           th:text="${task.title}">Task title</span>
-                    <div class="d-flex">
-                        <a class="btn btn-outline-success btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
-                           title="Splněno">
-                            <i class="bi bi-check"></i>
-                        </a>
-                        <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
-                           title="Uprav">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
-                           title="Smaž">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
+                <div class="d-flex">
+                    <a class="btn btn-outline-success btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
+                       title="Splněno">
+                        <i class="bi bi-check"></i>
+                    </a>
+                    <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
+                       title="Uprav">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
+                       title="Smaž">
+                        <i class="bi bi-trash"></i>
+                    </a>
                 </div>
             </div>
-        </th:block>
-    </div>
-    <hr>
-    <h6 class="mt-5 text-left">Dokončené úkoly:</h6>
-    <div class="mt-4">
-        <th:block th:each="task : ${completedTasks}">
-            <div class="card mb-2">
-                <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+    </th:block>
+</div>
+<hr>
+<h6 class="mt-5 text-left">Dokončené úkoly:</h6>
+<div class="mt-4">
+    <th:block th:each="task : ${completedTasks}">
+        <div class="card mb-2">
+            <div class="card-body d-flex justify-content-between align-items-center">
                     <span th:classappend="${task.completed} ? 'text-muted text-decoration-line-through'"
                           th:text="${task.title}">Task title</span>
-                    <div class="d-flex">
-                        <a class="btn btn-outline-warning btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
-                           title="Obnov">
-                            <i class="bi bi-arrow-repeat"></i>
-                        </a>
-                        <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
-                           title="Uprav">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
-                           th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
-                           title="Smaž">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
+                <div class="d-flex">
+                    <a class="btn btn-outline-warning btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/toggle(id=${task.id})} : @{/{id}/toggle(id=${task.id})}"
+                       title="Obnov">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </a>
+                    <a class="btn btn-outline-primary btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/update(id=${task.id})} : @{/{id}/update(id=${task.id})}"
+                       title="Uprav">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a class="btn btn-outline-danger btn-sm ms-2 text-nowrap"
+                       th:href="${privateMode} ? @{private/{id}/delete(id=${task.id})} : @{/{id}/delete(id=${task.id})}"
+                       title="Smaž">
+                        <i class="bi bi-trash"></i>
+                    </a>
                 </div>
             </div>
-        </th:block>
-    </div>
-    <footer th:replace="~{fragments/footer.html}"></footer>
+        </div>
+    </th:block>
+</div>
+<footer th:replace="~{fragments/footer.html}"></footer>

@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry
                             .requestMatchers("/", "/update", "/{id}/update", "/{id}/toggle", "/{id}/delete", "/register/**").permitAll()
-                            .requestMatchers("/private/**").hasAnyRole("ADMIN", "USER" )
+                            .requestMatchers("/private/**").hasAnyRole("ADMIN", "USER")
                             .anyRequest().authenticated();
                 })
                 .formLogin(httpSecurityFormLoginConfigurer -> {
@@ -43,7 +43,7 @@ public class SecurityConfig {
                 })
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/?logout")
                         .permitAll()
                 )
 

@@ -15,14 +15,24 @@
 
     <div style="text-align: right; padding: 10px;">
         <th:block sec:authorize="isAnonymous()">
-            <a href="/login" class="btn btn-link text-decoration-none fw-bold text-primary">Přihlásit se</a>
+            <a href="/login" class="btn btn-link text-decoration-none fw-bold text-primary"><i
+                    class="bi bi-box-arrow-in-right fs-5"></i> Přihlásit se</a>
         </th:block>
 
         <th:block sec:authorize="isAuthenticated()">
             <form action="/logout" method="post">
-                <button type="submit" class="btn btn-link text-decoration-none fw-bold text-danger">
+                <button type="submit" class="btn btn-link text-decoration-none fw-bold text-danger"><i
+                        class="bi bi-box-arrow-right fs-5"></i>
                     Odhlásit se
                 </button>
             </form>
         </th:block>
+    </div>
+    <!-- Zobrazení informačních zpráv -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        Špatné přihlašovací údaje!
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-success">
+        Úspěšně jste se odhlásili.
     </div>
