@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry
                             .requestMatchers("/", "/update", "/{id}/update", "/{id}/toggle", "/{id}/delete", "/register/**").permitAll()
+                            .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/private/**").hasAnyRole("ADMIN", "USER")
                             .anyRequest().authenticated();
                 })
