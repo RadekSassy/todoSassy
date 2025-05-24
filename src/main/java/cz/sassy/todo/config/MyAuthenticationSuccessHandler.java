@@ -22,9 +22,9 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            setDefaultTargetUrl("/private");
+            setDefaultTargetUrl("/private?success");
         } else {
-            setDefaultTargetUrl("/private");
+            setDefaultTargetUrl("/private?success");
         }
 
         super.onAuthenticationSuccess(request, response, authentication);
