@@ -11,7 +11,7 @@
     transform: translateX(-50%);
     z-index: 1050;
     width: auto;
-    min-width: 300px;
+    min-width: 350px;
     max-width: 600px;
     transition: opacity 0.25s ease-in-out;
 
@@ -20,7 +20,7 @@
     animation-fill-mode: forwards;
 
     display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
