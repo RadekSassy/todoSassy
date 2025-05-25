@@ -37,12 +37,12 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public void createTask(String title) {
+    public String createTask(String title) {
 
         String ValidatedTitle = validateAndTrimTitle(title);
 
         if (ValidatedTitle == null || taskRepository.count() >= 10) {
-            return;
+            return ValidatedTitle;
         }
 
         String sanitizedTitle = sanitizeInput(ValidatedTitle);
@@ -51,6 +51,7 @@ public class TaskService {
         task.setCompleted(false);
         task.setTitle(sanitizedTitle);
         taskRepository.save(task);
+        return ValidatedTitle;
     }
 
     public void deleteTask(Long id) {
