@@ -24,3 +24,13 @@
     align-items: center;
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .alert-fixed {
+        left: 2px;
+        transform: none;
+        width: auto;
+        min-width: unset;
+        max-width: unset;
+    }
+}

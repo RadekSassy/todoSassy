@@ -2,20 +2,20 @@
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 <div class="container bg-white p-4 rounded shadow" style="max-width: 400px;">
-    <h2 class="text-center text-dark">Login</h2>
+    <h2 class="text-center text-dark">Přihlášení</h2>
 
     <form action="/login" method="post">
         <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+            <label for="username" class="form-label">Jméno:</label>
+            <input type="text" id="username" name="username" class="form-control" autocomplete="username" required >
         </div>
 
         <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
+            <label for="password" class="form-label">Heslo:</label>
             <input type="password" id="password" name="password" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-success w-100">Login</button>
+        <button type="submit" class="btn btn-success w-100">Přihlásit</button>
     </form>
 </div>
 <footer th:replace="~{fragments/footer.html}"></footer>
