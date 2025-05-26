@@ -16,15 +16,25 @@ import org.springframework.security.web.SecurityFilterChain;
  * SecurityConfig is a configuration class that sets up Spring Security for the application.
  * It configures authentication, authorization, and password encoding.
  */
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * UserDetailsService bean that provides user details for authentication.
+     * This service is used by the authentication provider to load user-specific data.
+     */
     @Autowired
     private UserDetailsService userDetailsService;
 
-
+    /**
+     * SecurityFilterChain bean that configures HTTP security for the application.
+     * It sets up CSRF protection, request authorization, form login, and logout handling.
+     *
+     * @param httpSecurity the HttpSecurity object to configure security settings.
+     * @return a SecurityFilterChain instance configured with the specified security settings.
+     * @throws Exception if an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -51,11 +61,23 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * UserDetailsService bean that provides user details for authentication.
+     * This service is used by the authentication provider to load user-specific data.
+     *
+     * @return a UserDetailsService instance configured with the application's user details.
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return userDetailsService;
     }
 
+    /**
+     * AuthenticationProvider bean that uses DaoAuthenticationProvider to authenticate users.
+     * It uses the UserDetailsService and PasswordEncoder beans for user details and password encoding.
+     *
+     * @return an AuthenticationProvider instance configured with UserDetailsService and PasswordEncoder.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -64,6 +86,12 @@ public class SecurityConfig {
         return provider;
     }
 
+    /**
+     * PasswordEncoder bean that uses BCrypt for encoding passwords.
+     * This is used to securely hash passwords before storing them in the database.
+     *
+     * @return a PasswordEncoder instance configured with BCrypt.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
