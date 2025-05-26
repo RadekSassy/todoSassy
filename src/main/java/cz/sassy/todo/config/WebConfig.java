@@ -10,6 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    /**
+     * This method adds resource handlers to serve static resources.
+     * It maps all requests to the classpath location "classpath:/static/".
+     *
+     * @param registry the ResourceHandlerRegistry to configure resource handlers
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
