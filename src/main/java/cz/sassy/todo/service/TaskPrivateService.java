@@ -54,17 +54,15 @@ public class TaskPrivateService {
 
     public void createTask(String title) {
 
-        String ValidatedTitle = validateAndTrimTitle(title);
+        String validatedTitle = validateAndTrimTitle(sanitizeInput(title));
 
-        if (ValidatedTitle == null) {
+        if (validatedTitle == null) {
             return;
         }
 
-        String sanitizedTitle = sanitizeInput(ValidatedTitle);
-
         Task task = new Task();
         task.setCompleted(false);
-        task.setTitle(sanitizedTitle);
+        task.setTitle(validatedTitle);
         task.setUserId(getCurrentUserId());
         taskRepository.save(task);
     }
@@ -88,14 +86,13 @@ public class TaskPrivateService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid task id"));
 
-        String validatedTitle = validateAndTrimTitle(title);
+        String validatedTitle = validateAndTrimTitle(sanitizeInput(title));
 
         if (validatedTitle == null) {
             return;
         }
 
-        String sanitizedTitle = sanitizeInput(validatedTitle);
-        task.setTitle(sanitizedTitle);
+        task.setTitle(validatedTitle);
         task.setCompleted(false);
         taskRepository.save(task);
     }
