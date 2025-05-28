@@ -53,13 +53,19 @@ class TaskServiceTests {
         String task = taskService.createTask("   New Task Trimmed   ");
         assertEquals("New Task Trimmed", task);
     }
-
+/**
+     * Tests the task creation functionality.
+     * Ensures that a task with a title containing special characters is sanitized.
+     */
     @Test
     void testMaliciousScriptInjection() {
         String task = taskService.createTask("<script>alert('Hacked!');</script>");
         assertNull(task, "Sanitization should return null if the input is malicious.");
     }
-
+/**
+     * Tests the task creation functionality.
+     * Ensures that a task with a title exceeding the character limit is not created.
+     */
     @Test
     void testSQLInjectionAttempt() {
         String task = taskService.createTask("Robert'); DROP TABLE Tasks; --");
