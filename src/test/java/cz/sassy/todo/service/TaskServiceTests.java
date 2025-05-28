@@ -54,4 +54,16 @@ class TaskServiceTests {
         assertEquals("New Task Trimmed", task);
     }
 
+    @Test
+    void testMaliciousScriptInjection() {
+        String task = taskService.createTask("<script>alert('Hacked!');</script>");
+        assertNull(task, "Sanitization should return null if the input is malicious.");
+    }
+
+    @Test
+    void testSQLInjectionAttempt() {
+        String task = taskService.createTask("Robert'); DROP TABLE Tasks; --");
+        assertEquals("Robert'); DROP TABLE Tasks; --", task, "SQL injection attempt should not alter the task title.");
+    }
+
 }
