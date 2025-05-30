@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 /**
  * Service class for managing tasks.
  */
-
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
 
+    /**
+     * Constructor for TaskService.
+     *
+     * @param taskRepository the repository for managing tasks
+     */
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
@@ -49,17 +53,24 @@ public class TaskService {
 
     /**
      * Creates a new task with the given title.
-     * The title is sanitized and validated before saving.
+     * If the title is null, empty, or if there are already 10 tasks, it returns the original title.
+     * The title is sanitized and validated to ensure it does not exceed 255 characters.
      *
      * @param title the title of the task to be created
-     * @return the validated and sanitized title of the created task, or null if invalid
+     * @return the validated title of the created task, or the original title if creation fails
      */
     public String createTask(String title) {
 
-        String validatedTitle = validateAndTrimTitle(sanitizeInput(title));
+        String trimmedTitle = trimTitle(title);
 
-        if (validatedTitle == null || taskRepository.count() >= 10) {
-            return validatedTitle;
+        if (trimmedTitle == null || trimmedTitle.isEmpty() || taskRepository.count() >= 10) {
+            return null;
+        }
+
+        String validatedTitle = validateLongOfTitle(sanitizeInput(trimmedTitle));
+
+        if (validatedTitle == null || validatedTitle.isEmpty()) {
+            return null;
         }
 
         Task task = new Task();
@@ -101,8 +112,8 @@ public class TaskService {
     }
 
     /**
-     * Updates the title of a task by its ID.
-     * The title is sanitized and validated before updating.
+     * Updates a task's title by its ID.
+     * If the title is null or empty, the task will not be updated.
      *
      * @param id    the ID of the task to be updated
      * @param title the new title for the task
@@ -111,32 +122,47 @@ public class TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid task id"));
 
-        String validatedTitle = validateAndTrimTitle(sanitizeInput(title));
+        String trimmedTitle = trimTitle(title);
 
-        if (validatedTitle == null) {
+        if (trimmedTitle == null || trimmedTitle.isEmpty()) {
             return;
         }
 
-        String sanitizedTitle = sanitizeInput(validatedTitle);
-        task.setTitle(sanitizedTitle);
+        String validatedTitle = validateLongOfTitle(sanitizeInput(trimmedTitle));
+
+        if (validatedTitle == null || validatedTitle.isEmpty()) {
+            return;
+        }
+
+        task.setTitle(validatedTitle);
         task.setCompleted(false);
         taskRepository.save(task);
     }
 
     /**
-     * Validates and trims the title of a task.
+     * Trims the title to remove leading and trailing whitespace.
      * If the title is null or empty, it returns null.
-     * If the title exceeds 255 characters, it trims it to 255 characters.
+     * If the title exceeds 255 characters, it truncates it to 255 characters.
      *
-     * @param title the title to be validated and trimmed
-     * @return the validated and trimmed title, or null if invalid
+     * @param title the title string to be trimmed
+     * @return the trimmed title string, or null if the input is null or empty
      */
-    private String validateAndTrimTitle(String title) {
-
-        if (title == null || title.trim().isEmpty()) {
+    private String trimTitle(String title) {
+        String input = title != null ? title.trim() : null;
+        if (input == null || input.isEmpty()) {
             return null;
         }
-        String input = title.trim();
+        return input.length() > 255 ? input.substring(0, 255) : input;
+    }
+
+    /**
+     * Validates the length of the title.
+     * If the title exceeds 255 characters, it truncates it to 255 characters.
+     *
+     * @param input the input string to be validated
+     * @return the validated title string, truncated if necessary
+     */
+    private String validateLongOfTitle(String input) {
         return input.length() > 255 ? input.substring(0, 255) : input;
     }
 

@@ -30,7 +30,6 @@ class TaskServiceTests {
         assertEquals("New Task Created", task);
     }
 
-
     /**
      * Tests the task creation functionality.
      * Ensures that an empty or null task is not created.
@@ -53,7 +52,8 @@ class TaskServiceTests {
         String task = taskService.createTask("   New Task Trimmed   ");
         assertEquals("New Task Trimmed", task);
     }
-/**
+
+    /**
      * Tests the task creation functionality.
      * Ensures that a task with a title containing special characters is sanitized.
      */
@@ -62,7 +62,8 @@ class TaskServiceTests {
         String task = taskService.createTask("<script>alert('Hacked!');</script>");
         assertNull(task, "Sanitization should return null if the input is malicious.");
     }
-/**
+
+    /**
      * Tests the task creation functionality.
      * Ensures that a task with a title exceeding the character limit is not created.
      */
@@ -71,5 +72,4 @@ class TaskServiceTests {
         String task = taskService.createTask("Robert'); DROP TABLE Tasks; --");
         assertEquals("Robert'); DROP TABLE Tasks; --", task, "SQL injection attempt should not alter the task title.");
     }
-
 }
