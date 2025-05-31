@@ -27,13 +27,13 @@ public class TaskController {
     @GetMapping
     public String getTasks(Model model) {
 
+        // Retrieving a list of completed and incomplete tasks
         List<Task> completedTasks = taskService.getCompletedTasks();
         List<Task> uncompletedTasks = taskService.getUncompletedTasks();
 
-        // Přidání obou seznamů do modelu
+        // Adding both lists to the model
         model.addAttribute("completedTasks", completedTasks);
         model.addAttribute("uncompletedTasks", uncompletedTasks);
-        model.addAttribute("view", "tasks");
         return "tasks";
     }
 
