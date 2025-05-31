@@ -64,7 +64,6 @@ public class TaskController {
     public String updateTasks(@PathVariable Long id, Model model) {
         Task task = taskService.getTaskById(id);
         model.addAttribute("task", task);
-        model.addAttribute("view", "update");
         return "update";
     }
 
