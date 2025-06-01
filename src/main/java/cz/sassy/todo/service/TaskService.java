@@ -27,29 +27,31 @@ public class TaskService {
     /**
      * Constructor for TaskService.
      *
-     * @param taskRepository the repository for managing tasks
+     * @param taskRepository   the repository for managing tasks
+     * @param myUserRepository the repository for managing users
      */
     public TaskService(TaskRepository taskRepository, MyUserRepository myUserRepository) {
         this.taskRepository = taskRepository;
         this.myUserRepository = myUserRepository;
     }
 
+
     /**
      * Retrieves the ID of the currently authenticated user.
+     * If the user is not authenticated, it returns null.
+     * orElse, it fetches the user by their username and returns their ID.
+     * It's important to note that if the user is not authenticated for any reason, this method will return null.
      *
-     * @return the ID of the current user, or null if no user is authenticated
+     * @return the ID of the current user, or null if not authenticated
      */
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null; // Uživatel není přihlášen
-        }
-
-        String username = authentication.getName();
-        return myUserRepository.findByUsername(username)
+        return (authentication != null)
+                ? myUserRepository.findByUsername(authentication.getName())
                 .map(MyUser::getId)
-                .orElse(null);
+                .orElse(null)
+                : null;
     }
 
     /**
