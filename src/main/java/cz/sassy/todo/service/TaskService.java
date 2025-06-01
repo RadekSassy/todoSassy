@@ -1,12 +1,17 @@
 package cz.sassy.todo.service;
 
+import cz.sassy.todo.model.MyUser;
 import cz.sassy.todo.model.Task;
+import cz.sassy.todo.repository.MyUserRepository;
 import cz.sassy.todo.repository.TaskRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -17,38 +22,72 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final MyUserRepository myUserRepository;
 
     /**
      * Constructor for TaskService.
      *
      * @param taskRepository the repository for managing tasks
      */
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, MyUserRepository myUserRepository) {
         this.taskRepository = taskRepository;
+        this.myUserRepository = myUserRepository;
     }
 
     /**
-     * Retrieves all tasks that are not assigned to any user.
+     * Retrieves the ID of the currently authenticated user.
      *
-     * @return a list of tasks that are not assigned to any user
+     * @return the ID of the current user, or null if no user is authenticated
+     */
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null; // Uživatel není přihlášen
+        }
+
+        String username = authentication.getName();
+        return myUserRepository.findByUsername(username)
+                .map(MyUser::getId)
+                .orElse(null);
+    }
+
+    /**
+     * Retrieves all completed tasks, sorted by title.
+     * If the user is not authenticated, it retrieves tasks that are not assigned to any user.
+     *
+     * @return a list of completed tasks, sorted by title
      */
     public List<Task> getCompletedTasks() {
         Collator collator = Collator.getInstance(new Locale("cs", "CZ"));
-        return taskRepository.findByUserIdIsNull().stream()
-                .filter(Task::isCompleted)
-                .sorted((task1, task2) -> collator.compare(task1.getTitle(), task2.getTitle()))
-                .collect(Collectors.toList());
+
+        if (getCurrentUserId() == null) {
+            return taskRepository.findByUserIdIsNull().stream()
+                    .filter(Task::isCompleted)
+                    .sorted((task1, task2) -> collator.compare(task1.getTitle(), task2.getTitle()))
+                    .collect(Collectors.toList());
+        } else {
+            return taskRepository.findByUserIdAndCompletedTrue(getCurrentUserId()).stream()
+                    .sorted((task1, task2) -> collator.compare(task1.getTitle(), task2.getTitle()))
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
-     * Retrieves all tasks that are not completed and not assigned to any user.
+     * Retrieves all uncompleted tasks for the current user.
+     * If the user is not authenticated, it retrieves tasks that are not assigned to any user.
      *
-     * @return a list of uncompleted tasks that are not assigned to any user
+     * @return a list of uncompleted tasks
      */
     public List<Task> getUncompletedTasks() {
-        return taskRepository.findByUserIdIsNull().stream()
-                .filter(task -> !task.isCompleted())
-                .collect(Collectors.toList());
+
+        if (getCurrentUserId() == null) {
+            return taskRepository.findByUserIdIsNull().stream()
+                    .filter(task -> !task.isCompleted())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>(taskRepository.findByUserIdAndCompletedFalse(getCurrentUserId()));
+        }
     }
 
     /**
@@ -76,6 +115,7 @@ public class TaskService {
         Task task = new Task();
         task.setCompleted(false);
         task.setTitle(validatedTitle);
+        task.setUserId(getCurrentUserId());
         taskRepository.save(task);
         return validatedTitle;
     }
