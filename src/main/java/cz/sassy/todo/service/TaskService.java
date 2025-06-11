@@ -35,7 +35,6 @@ public class TaskService {
         this.myUserRepository = myUserRepository;
     }
 
-
     /**
      * Retrieves the ID of the currently authenticated user.
      * If the user is not authenticated, it returns null.
@@ -102,18 +101,28 @@ public class TaskService {
      */
     public String createTask(String title) {
 
+        // Trim the title to remove leading and trailing whitespace
         String trimmedTitle = trimTitle(title);
 
-        if (trimmedTitle == null || trimmedTitle.isEmpty() || taskRepository.count() >= 10) {
+        // If the title is null or empty, return null
+        if (trimmedTitle == null || trimmedTitle.isEmpty()) {
             return null;
         }
 
+        // If the user is not authenticated and there are already 10 tasks without a user ID, return null
+        if (getCurrentUserId() == null && taskRepository.findByUserIdIsNull().size() >= 10) {
+            return null;
+        }
+
+        // Validate the title length and sanitize the input
         String validatedTitle = validateLongOfTitle(sanitizeInput(trimmedTitle));
 
+        // If the validated title is null or empty, return null
         if (validatedTitle == null || validatedTitle.isEmpty()) {
             return null;
         }
 
+        // Create a new task with the validated title and save it to the repository
         Task task = new Task();
         task.setCompleted(false);
         task.setTitle(validatedTitle);

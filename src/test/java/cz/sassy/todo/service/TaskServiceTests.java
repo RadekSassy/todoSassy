@@ -1,5 +1,7 @@
 package cz.sassy.todo.service;
 
+import cz.sassy.todo.repository.TaskRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,22 @@ class TaskServiceTests {
      */
     @Autowired
     private TaskService taskService;
+
+    /**
+     * Repository for managing task data.
+     * This is used to interact with the database for task-related operations.
+     */
+    @Autowired
+    private TaskRepository taskRepository;
+
+    /**
+     * Sets up the test environment by clearing tasks that are not assigned to any user.
+     * This ensures that each test starts with a clean slate.
+     */
+    @BeforeEach
+    void setUp() {
+        taskRepository.deleteByUserIdIsNull();
+    }
 
     /**
      * Tests the task creation functionality.
